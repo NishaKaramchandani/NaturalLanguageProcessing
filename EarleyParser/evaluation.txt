@@ -1,0 +1,45 @@
+Initial Evaluation of the System
+1. Evaluate the parser in its current form:
+        
+        (i) What sort of sentences can it parse ?
+                
+                As per the production rules given in simple.gr the following sentences can be 
+		parsed :  
+                (i) Declarative Sentences: Sentences with declarative structure have a subject 
+                    noun phrase followed by a verb phrase. 
+                                        S → NP VP
+                (ii) Yes-no Sentences: Sentences with yes-no question structure are often 
+   		    (though not always) used to ask questions; they begin with an auxiliary verb,
+                     followed by a subject NP, followed by a VP.
+					S → faux NP VP 
+		(iii) Noun Phrase followed with a Noun Phrase with is between them.
+					S → NP fis NP 
+      				Eg: Earth is planet.
+
+
+	(ii) What types of sentences will it fail to parse ?
+
+
+		The following types of sentences will fail to parse:
+
+
+		(i) Imperative Sentences: Sentences beginning with a verb phrase and having
+    		    no subject.
+         				S → V
+                (ii) Wh-subject-question: Identical to the declarative structure, except that the
+    		    first noun phrase contains some wh-word.
+					S → Wh-NP VP
+		(iii) Wh-non-subject-question: The wh-phrase is not the subject of the 
+      		     sentence, and so the sentence includes another subject. In these types of
+      		     sentences the auxiliary appears before the subject NP, just as in the yes-no
+      		     question structures. 
+                        		S → Wh-NP Aux NP VP
+
+
+	(iii) What improvements to the grammar or parser are required to properly parse common failed sentences ?
+
+
+        	To improve the grammar or parser following production rules need to be added to be added to simple.gr:
+        	(i)         S → VP
+           	(ii)        S → Wh-NP VP
+           	(iii)       S → Wh-NP Aux NP VP

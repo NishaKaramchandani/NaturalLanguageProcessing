@@ -1,0 +1,48 @@
+1.  Look at the grammar. What changes to the grammar alone could improve the parsing   (in particular, consider coordinated conjunctions)? Modify the grammar somewhat and evaluate the improvements. What new sentences may be parsed? What invalid sentences are now parsed (if any)?
+
+
+Answer.  (A) We can use the below co-ordinated conjunction rules to improve the grammar. 
+                (i) NP → NP and NP
+                    
+                (ii) VP → VP and VP
+
+
+                (iii) S → S and S
+
+
+         (B) New sentences being parsed are: 
+
+
+		(i)  i and john drive jetcar
+
+
+		Parse Tree : s [ np [ np [ fpron [ i ] ]fand [ and ]np [ fname [ john ] ] ]vp [ vbar [ vbar [ fv [ drive ] ]np [ nbar [ fn [ jetcar ] ] ] ] ]
+
+
+		(ii) will you drive and give 
+
+
+		Parse Tree : s [ faux [ will ]np [ fpron [ you ] ]vp [ vp [ vbar [ fv [ drive ] ] ]fand [ and ]vp [ vbar [ fv [ give ] ] ] ]
+
+
+		(iii) I give watermelon and drive jetcar
+
+
+		Parse Tree : s [ np [ fpron [ i ] ]vp [ vp [ vbar [ vbar [ fv [ give ] ]np [ nbar [ fn [ watermelon ] ] ] ] ]fand [ and ]vp [ vbar [ vbar [ fv [ drive ] ]np [ nbar [ fn [ jetcar ] ] ] ] ] ]
+
+
+
+
+   	(C) Below are the grammars which are invalid and getting parsed by the new rules:
+
+
+        	(i) chicago did drive and give
+
+
+        	Parse Tree : s [ np [ fname [ chicago ] ] vp [ vp [ vbar [ faux [ did ] fv [ drive ] ] ] fand [ and ] vp [ vbar [ fv [ give ] ] ] ] ]
+
+
+            	(ii) jetcar and this watermelon drive
+
+
+        	Parse Tree : Parse tree: s [ np [ np [ nbar [ fn [ jetcar ] ] ] fand [ and ] np [ fd [ this ] nbar [ fn [ watermelon ] ] ] ] vp [ vbar [ fv [ drive ] ] ] ]

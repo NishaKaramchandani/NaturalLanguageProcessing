@@ -1,0 +1,139 @@
+﻿Question: 
+Modify the code to output the parse tree(s) computed, rather than just the dynamic programming table and whether the sentence parses. You will need to add appropriate back-links into the DP table and write a routine to extract trees from the table. Show the tree(s) by printing the input sentence in a bracketed form, for example:
+S[ NP[ Det[ the ] N[ man ] ] VP[ V[ saw ] NP[ PN[ her ] ] ] ]
+Solution:
+Function 1:
+// Method used to only return unique Production objects in the list.
+private Vector<Production> unique(Vector<Production> list) {
+   Vector<Production> uniqueList = new Vector<>();
+   Set<Production> uniqueSet = new HashSet<>();
+   for (Production obj : list) {
+       if (uniqueSet.add(obj)) {
+           uniqueList.add(obj);
+       }
+   }
+   return uniqueList;
+}
+
+
+Function 2:
+// Method to return production rules that match the start and left_symbol passed.
+private Production getMatchingProduction(int start, String left) {
+   for (int j = 0; j < final_productions.size(); j++) {
+       Production production = (Production) final_productions.get(j);
+       if (production.start == start && production.left.equalsIgnoreCase(left)) {
+           final_productions.remove(production);
+           return production;
+       }
+   }
+   return null;
+}
+
+
+________________
+
+
+Function 3:
+class SortByStart implements Comparator<Production> {
+   // Used for sorting in ascending order of
+   // roll number
+   public int compare(Production a, Production b) {
+       if (a.start == b.start) {
+           return -1;
+       } else {
+           return a.start - b.start;
+       }
+   }
+}
+
+
+Function 4:
+private void parseTree(Production parent_production, String symbol_left) {
+   Production production = getMatchingProduction(word_count, symbol_left);
+   if (parent_production == null || !production.equals(parent_production)) {
+       production.parent = parent_production;
+       if (parent_production != null) {
+           if (parent_production.children == null) {
+               parent_production.children = new ArrayList<>();
+           }
+           parent_production.children.add(production);
+       }
+       final_probability = final_probability * production.probability;
+       System.out.print(production.left + " [ ");
+       for (int i = 0; i < production.right.length; i++) {
+           if (!isNonTerminal(production.right[i])) {
+               System.out.print(production.right[i]);
+               word_count++;
+           } else {
+               //System.out.println("Calling parse tree with:: " + production + " start:: " + (production.start + i) + "left symbol:: " + production.right[i]);
+               parseTree(production, production.right[i]);
+               System.out.print(" ]");
+           }
+       }
+   }
+}
+
+
+________________
+
+
+Working
+The above function parseTree does the following steps recursively:
+1. Finds a matching rule given a left symbol. Assigns it to the production object defined in the function.
+2. If parent_production passed to the function is not null assign it as parent object of production. Assign production as child of parent_production.
+3. For all the symbols on the right of the production:
+   1. Check if any are terminal symbols. If so, increase the word_count variable.
+   2. Call the parseTree function recursively for every non terminal symbol on the right of production.
+
+
+Output
+
+
+Final Production List
+0        0        fpron->        i        .
+0        0        np->        fpron        .
+0        1        fv->        drive        .
+0        1        vbar->        fv        .
+0        1        vp->        vbar        .
+0        0        s->        np        vp        .
+0        2        fp->        to        .
+0        3        fname->        chicago        .
+0        3        np->        fname        .
+0        2        pp->        fp        np        .
+0        2        vbar-mods->        pp        .
+0        1        vp->        vbar        vbar-mods        .
+0        0        s->        np        vp        .
+
+
+Final Production List Sorted by Start
+0        0        s->        np        vp        .
+0        0        s->        np        vp        .
+0        0        np->        fpron        .
+0        0        fpron->        i        .
+0        1        vp->        vbar        vbar-mods        .
+0        1        vp->        vbar        .
+0        1        vbar->        fv        .
+0        1        fv->        drive        .
+0        2        vbar-mods->        pp        .
+0        2        pp->        fp        np        .
+0        2        fp->        to        .
+0        3        np->        fname        .
+0        3        fname->        chicago        .
+
+
+Final Production List removing duplicate entries
+0        0        s->        np        vp        .
+0        0        np->        fpron        .
+0        0        fpron->        i        .
+0        1        vp->        vbar        vbar-mods        .
+0        1        vp->        vbar        .
+0        1        vbar->        fv        .
+0        1        fv->        drive        .
+0        2        vbar-mods->        pp        .
+0        2        pp->        fp        np        .
+0        2        fp->        to        .
+0        3        np->        fname        .
+0        3        fname->        chicago        .
+
+
+s [ np [ fpron [ i ] ]vp [ vbar [ fv [ drive ] ]vbar-mods [ pp [ fp [ to ]np [ fname [ chicago ] ] ] ] ]

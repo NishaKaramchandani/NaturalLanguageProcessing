@@ -1,0 +1,15 @@
+1	ROOT	S
+1	S	NP VP
+0.25	NP	Name
+0.25	NP	N
+0.5	NP	NP PP
+0.35	VP	V NP
+0.35	VP	V
+0.30	VP	VP PP
+1	PP	P NP
+1	Name	joe
+0.33	N	ice
+0.33	N	drinks
+0.33	N	water
+1	V	drinks
+1	P	with

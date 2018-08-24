@@ -1,0 +1,43 @@
+﻿Question:
+Modify the code to implement a version of probabilistic parsing for the Earley algorithm using a similar method as that discussed in class for the CYK algorithm. Each dotted rule will have a probability (log-probability) that is the product (sum) of the rule's probability (log-probability) with the probabilities (log-probabilities) of all the completed children it covers so far. Test the system using a probabilized version of simple.gr (see "prob-simple.gr"). Test the system on ambiguous sentences to see if the highest probability parses are indeed the most "reasonable" parses. Write a couple of ideas of how you might improve the system yet further.
+Solution:
+We added grammar with probability to generate ambiguous statement.
+
+
+Sentence:
+joe drinks water with ice
+
+
+Grammar:
+papa_ambi.gr
+1   ROOT   S
+1  S  NP VP
+0.25   NP Name
+0.25   NP N
+0.5    NP NP PP
+0.35   VP V NP
+0.35   VP V
+0.30   VP VP PP
+1  PP P NP
+1  Name   joe
+0.33   N  ice
+0.33   N  drinks
+0.33   N  water
+1  V  drinks
+1  P  with
+
+
+Parse Tree 1:
+S [ NP [ Name [ joe ] ]VP [ V [ drinks ]NP [ NP [ N [ water ] ]PP [ P [ with ]NP [ N [ ice ] ] ] ] ]
+Probability = 0.000298
+
+
+Parse Tree 2:
+S [ NP [ Name [ joe ] ] VP [ VP [ V [ drinks ] NP [ N [ water ] ] ] PP [ P [ with ] ] NP [ N [ ice ] ] ] ]
+Probability = 0.00018
+
+
+As the log probability for parse tree one is more, the parsing for tree one is grammatically more accurate than parse tree two.
+
+
+Improvements: If there were grammar rules which just have two children on the right hand side the parse trees would be more accurate.
